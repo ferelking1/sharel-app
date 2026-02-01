@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sharel_app/l10n/app_localizations.dart';
 import '../../core/theme/design_system.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,7 +10,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(72),
         child: _HomeHeader(),
@@ -48,7 +49,7 @@ class _HomeHeader extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacing16, vertical: AppTheme.spacing12),
-      color: theme.colorScheme.background,
+      color: theme.colorScheme.surface,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -78,7 +79,10 @@ class _HomeHeader extends StatelessWidget {
             children: [
               Icon(Icons.chat, color: theme.colorScheme.primary, size: 28),
               const SizedBox(width: AppTheme.spacing16),
-              Icon(Icons.notifications_none, color: theme.colorScheme.primary, size: 28),
+              InkWell(
+                onTap: () => context.go('/notification'),
+                child: Icon(Icons.notifications_none, color: theme.colorScheme.primary, size: 28),
+              ),
               const SizedBox(width: AppTheme.spacing16),
               Icon(Icons.add_circle_outline, color: theme.colorScheme.primary, size: 28),
             ],
@@ -113,23 +117,27 @@ class _HomeMainActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final t = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _CircleActionButton(
           icon: Icons.send,
-          label: 'Envoyer',
+          label: t.labelSend,
           color: theme.colorScheme.primary,
+          onTap: () => context.go('/sender'),
         ),
         _CircleActionButton(
           icon: Icons.download,
-          label: 'Recevoir',
+          label: t.labelReceive,
           color: theme.colorScheme.primary,
+          onTap: () => context.go('/receiver'),
         ),
         _CircleActionButton(
           icon: Icons.folder,
-          label: 'Fichiers',
+          label: t.labelFiles,
           color: theme.colorScheme.primary,
+          onTap: () => context.go('/files'),
         ),
       ],
     );
@@ -140,7 +148,8 @@ class _CircleActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  const _CircleActionButton({required this.icon, required this.label, required this.color});
+  final VoidCallback? onTap;
+  const _CircleActionButton({required this.icon, required this.label, required this.color, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +161,7 @@ class _CircleActionButton extends StatelessWidget {
           elevation: AppTheme.elevation,
           child: InkWell(
             borderRadius: BorderRadius.circular(40),
-            onTap: () {},
+            onTap: onTap,
             child: SizedBox(
               width: 72,
               height: 72,
@@ -334,24 +343,37 @@ class _HomeBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final t = AppLocalizations.of(context)!;
     return NavigationBar(
-      backgroundColor: theme.colorScheme.background,
-      destinations: const [
+      backgroundColor: theme.colorScheme.surface,
+      destinations: [
         NavigationDestination(
           icon: Icon(Icons.home),
-          label: 'Accueil',
+          label: t.bottomNavHome,
         ),
         NavigationDestination(
           icon: Icon(Icons.travel_explore),
-          label: 'Découvrir',
+          label: t.bottomNavDiscovery,
         ),
         NavigationDestination(
           icon: Icon(Icons.person),
-          label: 'Moi',
+          label: t.bottomNavMe,
         ),
       ],
       selectedIndex: 0,
-      onDestinationSelected: (index) {},
+      onDestinationSelected: (index) {
+        switch (index) {
+          case 0:
+            context.go('/');
+            break;
+          case 1:
+            context.go('/discovery');
+            break;
+          case 2:
+            context.go('/me');
+            break;
+        }
+      },
     );
   }
 }

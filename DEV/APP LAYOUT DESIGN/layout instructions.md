@@ -1,0 +1,3 @@
+ici tu as tout les instructions tout les écran de l'App 
+
+1- home screen c'est l'écran d'accueil sur ce dernier en haut a droite en a l'icône de notificationqui doit ouvrir notification center et encore sur home en a les 3 gros bouton envoyer qui ouvre sender (envoyer) screen et recevoir qui ouvre receveur screen avec l'animation chargement avant affichage montre dans receveur loading animation screen on a aussi le me screen tu vois le topo créé tout ça correctement et Beau utiliser bien i18n le thème syste etc tout doit être correct 

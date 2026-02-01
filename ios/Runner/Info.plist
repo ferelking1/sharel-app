@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Accès aux contacts pour partager</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Accès à la bibliothèque photo pour partager</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Accès pour ajouter à la bibliothèque photo</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Accès à la musique pour partager</string>
 </dict>
 </plist>
