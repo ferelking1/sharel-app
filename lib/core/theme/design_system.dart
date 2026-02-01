@@ -39,7 +39,7 @@ class AppTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: 'Roboto',
   ).copyWith(
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: elevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -63,7 +63,7 @@ class AppTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: 'Roboto',
   ).copyWith(
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: elevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),

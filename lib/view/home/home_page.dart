@@ -76,7 +76,7 @@ class _HomeHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(Icons.whatsapp, color: theme.colorScheme.primary, size: 28),
+              Icon(Icons.chat, color: theme.colorScheme.primary, size: 28),
               const SizedBox(width: AppTheme.spacing16),
               Icon(Icons.notifications_none, color: theme.colorScheme.primary, size: 28),
               const SizedBox(width: AppTheme.spacing16),
@@ -181,7 +181,7 @@ class _HomeVideoDownloaderCard extends StatelessWidget {
             const SizedBox(height: AppTheme.spacing12),
             Row(
               children: [
-                _AppIconButton(icon: Icons.whatsapp, label: 'WhatsApp'),
+                _AppIconButton(icon: Icons.chat, label: 'WhatsApp'),
                 _AppIconButton(icon: Icons.camera_alt, label: 'Instagram'),
                 _AppIconButton(icon: Icons.facebook, label: 'Facebook'),
                 _AppIconButton(icon: Icons.tv, label: 'FB Watch'),
