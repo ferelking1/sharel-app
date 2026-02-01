@@ -17,14 +17,33 @@ subprojects {
 }
 subprojects {
     afterEvaluate {
-        if (project.plugins.hasPlugin("com.android.library") || project.plugins.hasPlugin("com.android.application")) {
-            val android = project.extensions.findByName("android")
-            if (android is com.android.build.gradle.BaseExtension) {
-                // Force a valid namespace for all subprojects (plugins) that don't have one
-                if (android.namespace == null || android.namespace?.trim()?.isEmpty() == true) {
-                    val defaultNamespace = "com.sharel.plugins.${project.name.replace("-", "_")}"
-                    android.namespace = defaultNamespace
-                    println("Applied mandatory namespace: $defaultNamespace to ${project.name}")
+        if (
+            name != "app" &&
+            plugins.hasPlugin("com.android.library")
+        ) {
+            val androidExt = extensions.findByName("android")
+            if (androidExt != null) {
+                val hasNamespace = try {
+                    val ns = androidExt.javaClass
+                        .getMethod("getNamespace")
+                        .invoke(androidExt) as String?
+                    !ns.isNullOrBlank()
+                } catch (e: Exception) {
+                    false
+                }
+
+                if (!hasNamespace) {
+                    try {
+                        androidExt.javaClass
+                            .getMethod("setNamespace", String::class.java)
+                            .invoke(
+                                androidExt,
+                                "com.sharel.plugins.${name.replace("-", "_")}"
+                            )
+                        println("Patch: Assigned namespace to $name")
+                    } catch (e: Exception) {
+                        println("Patch: Failed to assign namespace to $name: ${e.message}")
+                    }
                 }
             }
         }
