@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sharel_app/model/apps_state.dart';
 
 class AppInfo {
   final String name;
@@ -26,10 +26,10 @@ class AppInfo {
   }
 }
 
-class AppsState {
+class AppsViewModel extends StateNotifier<AppsState> {
   static const platform = MethodChannel('com.sharel.app/apps');
 
-  AppsViewModel() : super(AppsState()) {
+  AppsViewModel() : super(const AppsState()) {
     loadApps();
   }
 
@@ -38,6 +38,11 @@ class AppsState {
       state = state.copyWith(
         error: 'Apps listing not available on this platform',
       );
+      return;
+    }
+
+    // Si déjà chargé, ne pas recharger
+    if (state.apps.isNotEmpty) {
       return;
     }
 
@@ -45,31 +50,9 @@ class AppsState {
 
     try {
       final result = await platform.invokeMethod('getInstalledApps');
-      final apps = (result as List<dynamic>).map((app) => AppInfo.fromMap(app as Map<String, dynamic>)).toList
-      apps: apps ?? this.apps,
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
-  }
-}
-
-class AppsViewModel extends StateNotifier<AppsState> {
-  AppsViewModel() : super(AppsState()) {
-    loadApps();
-  }
-
-  Future<void> loadApps() async {
-    if (!Platform.isAndroid) {
-      state = state.copyWith(
-        error: 'Apps listing not available on this platform',
-      );
-      return;
-    }
-
-    state = state.copyWith(isLoading: true, error: null);
-
-    try {
-      final apps = await InstalledApps.getInstalledApps();
+      final apps = (result as List<dynamic>)
+          .map((app) => AppInfo.fromMap(app as Map<String, dynamic>))
+          .toList();
       state = state.copyWith(
         apps: apps,
         isLoading: false,
