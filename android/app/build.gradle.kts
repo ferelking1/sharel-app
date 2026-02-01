@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sharel.com"
+    namespace = "com.sharel.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

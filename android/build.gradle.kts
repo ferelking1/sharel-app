@@ -20,10 +20,11 @@ subprojects {
         if (project.plugins.hasPlugin("com.android.library") || project.plugins.hasPlugin("com.android.application")) {
             val android = project.extensions.findByName("android")
             if (android is com.android.build.gradle.BaseExtension) {
+                // Force a valid namespace for all subprojects (plugins) that don't have one
                 if (android.namespace == null || android.namespace?.trim()?.isEmpty() == true) {
-                    val defaultNamespace = "com.sharel.patched.${project.name.replace("-", "_")}"
+                    val defaultNamespace = "com.sharel.plugins.${project.name.replace("-", "_")}"
                     android.namespace = defaultNamespace
-                    println("Setting namespace to $defaultNamespace for project ${project.name}")
+                    println("Applied mandatory namespace: $defaultNamespace to ${project.name}")
                 }
             }
         }
