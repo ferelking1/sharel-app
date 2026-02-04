@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+// qr_flutter removed for compatibility with multiple package versions
 import '../../core/theme/design_system.dart';
 import '../../viewmodel/selection_viewmodel.dart';
 import '../../viewmodel/transfer_viewmodel.dart';
@@ -137,7 +137,7 @@ class _RoomHostScreenState extends ConsumerState<RoomHostScreen> {
 
                   SizedBox(height: AppTheme.spacing32),
 
-                  // QR Code Section
+                  // QR / Address preview (compat fallback)
                   Text('Code QR', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
                   SizedBox(height: AppTheme.spacing12),
                   Center(
@@ -145,19 +145,28 @@ class _RoomHostScreenState extends ConsumerState<RoomHostScreen> {
                       padding: EdgeInsets.all(AppTheme.spacing16),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.white,
+                        color: theme.colorScheme.surface,
                         boxShadow: [
                           BoxShadow(
-                            color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                            blurRadius: 16,
-                            offset: const Offset(0, 8),
+                            color: theme.colorScheme.primary.withValues(alpha: 0.06),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
                           ),
                         ],
                       ),
-                      child: QrImage(
-                        data: _uri!.toString(),
-                        version: QrVersions.auto,
-                        size: 200,
+                      child: Column(
+                        children: [
+                          SelectableText(
+                            _uri!.toString(),
+                            style: theme.textTheme.bodyMedium?.copyWith(fontFamily: 'monospace'),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Si vous avez besoin d’un QR, générez-le depuis le client ou utilisez l’adresse ci‑dessous',
+                            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
                   ),
