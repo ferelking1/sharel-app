@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+// import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MusicState {
-  final List<SongModel> songs;
+  final List<dynamic> songs;
   final bool isLoading;
   final String? error;
 
@@ -14,7 +14,7 @@ class MusicState {
   });
 
   MusicState copyWith({
-    List<SongModel>? songs,
+    List<dynamic>? songs,
     bool? isLoading,
     String? error,
   }) {
@@ -27,7 +27,7 @@ class MusicState {
 }
 
 class MusicViewModel extends StateNotifier<MusicState> {
-  final OnAudioQuery _audioQuery = OnAudioQuery();
+  // final OnAudioQuery _audioQuery = OnAudioQuery();
 
   MusicViewModel() : super(MusicState()) {
     loadMusic();
@@ -37,6 +37,7 @@ class MusicViewModel extends StateNotifier<MusicState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
+      /*
       final permission = await Permission.audio.request();
       if (!permission.isGranted) {
         state = state.copyWith(
@@ -51,6 +52,11 @@ class MusicViewModel extends StateNotifier<MusicState> {
         songs: songs,
         isLoading: false,
       );
+      */
+      state = state.copyWith(
+        songs: [],
+        isLoading: false,
+      );
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -59,8 +65,7 @@ class MusicViewModel extends StateNotifier<MusicState> {
     }
   }
 
-  List<SongModel> get filteredSongs {
-    // TODO: implement search
+  List<dynamic> get filteredSongs {
     return state.songs;
   }
 }
