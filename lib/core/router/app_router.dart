@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../view/home/home_page.dart';
 import '../../screens/sender/sender_page.dart';
@@ -13,65 +14,89 @@ import '../../screens/files/files_page.dart';
 import '../../screens/notification/notification_center_page.dart';
 import '../../screens/me/me_page.dart';
 import '../../screens/discovery/discovery_page.dart';
+import '../../widgets/app_shell.dart';
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   initialLocation: '/',
+  navigatorKey: _rootNavigatorKey,
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(child: Text('Route not found: ${state.error}')),
+  ),
   routes: [
-    GoRoute(
+    ShellRoute(
+      navigatorKey: _shellNavigatorKey,
+      builder: (context, state, child) => AppShell(child: child),
+      routes: [
+        GoRoute(
       path: '/',
       builder: (context, state) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/files',
+          builder: (context, state) => const FilesPage(),
+        ),
+        GoRoute(
+          path: '/discovery',
+          builder: (context, state) => const DiscoveryPage(),
+        ),
+        GoRoute(
+          path: '/me',
+          builder: (context, state) => const MePage(),
+        ),
+      ],
     ),
     GoRoute(
       path: '/sender',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const SenderPage(),
     ),
     GoRoute(
       path: '/transfer/preparation',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const PreparationScreen(),
     ),
     GoRoute(
       path: '/transfer/host',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const RoomHostScreen(),
     ),
     GoRoute(
       path: '/transfer/join',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const JoinRoomScreen(),
     ),
     GoRoute(
       path: '/transfer/scan',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const QRScanScreen(),
     ),
     GoRoute(
       path: '/transfer/client',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const RoomClientScreen(),
     ),
     GoRoute(
       path: '/receive/preparation',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const ReceiverPreparationScreen(),
     ),
     GoRoute(
       path: '/transfer/discovery',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const DiscoveryScreen(),
     ),
     GoRoute(
       path: '/receiver',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const ReceiverPage(),
     ),
     GoRoute(
-      path: '/files',
-      builder: (context, state) => const FilesPage(),
-    ),
-    GoRoute(
       path: '/notification',
+      parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const NotificationCenterPage(),
-    ),
-    GoRoute(
-      path: '/me',
-      builder: (context, state) => const MePage(),
-    ),
-    GoRoute(
-      path: '/discovery',
-      builder: (context, state) => const DiscoveryPage(),
     ),
   ],
 );
